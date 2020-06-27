@@ -8,6 +8,7 @@
 
 from selenium import webdriver
 import os
+import shutil
 import time
 import requests
 import io
@@ -70,6 +71,8 @@ def fetch_image_urls(query:str, max_links_to_fetch:int, wd:webdriver, sleep_betw
     return image_urls
 
 def persist_image(folder_path:str,url:str):
+    file_path = ""
+
     try:
         image_content = requests.get(url).content
 
@@ -86,8 +89,11 @@ def persist_image(folder_path:str,url:str):
     except Exception as e:
         print(f"ERROR - Could not save {url} - {e}")
 
+    return file_path
 
 def search_and_download(search_term:str,driver_path:str,target_path='./images',number_images=5):
+    image_paths = []
+
     target_folder = os.path.join(target_path,'_'.join(search_term.lower().split(' ')))
 
     if not os.path.exists(target_folder):
@@ -97,4 +103,20 @@ def search_and_download(search_term:str,driver_path:str,target_path='./images',n
         res = fetch_image_urls(search_term, number_images, wd=wd, sleep_between_interactions=0.5)
 
     for elem in res:
-        persist_image(target_folder,elem)
+        image_paths.append(persist_image(target_folder,elem))
+
+    return image_paths
+
+def clean(target_path='./images'):
+    target_folder = os.path.join(target_path)
+    for filename in os.listdir(target_folder):
+        file_path = os.path.join(target_folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+    print("SUCCESS - Cleaned images filetree.")
