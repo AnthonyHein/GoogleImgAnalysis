@@ -11,7 +11,7 @@ import glob
 
 # Read in a file as a template, which enables substitution.
 def _readTemplate():
-    with open("brief_tpl.html", 'r', encoding='utf-8') as template_file:
+    with open("briefTpl.html", 'r', encoding='utf-8') as template_file:
         template_file_content = template_file.read()
     return Template(template_file_content)
 
