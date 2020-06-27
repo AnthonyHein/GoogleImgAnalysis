@@ -15,14 +15,14 @@ def _readTemplate():
         template_file_content = template_file.read()
     return Template(template_file_content)
 
-def create(search_term="", image_paths=[], target_path='./pages'):
+def create(search_term="", modifier="", image_paths=[], target_path='./pages'):
     images_html = ""
     for image in image_paths:
         images_html += "<img src=\"." + image + "\" alt=\"" + search_term + "\" style=\"height:300px;width:auto;\"><br>"
 
     f = open(f"{target_path}/{search_term}.html", "w")
     tpl = _readTemplate()
-    html = tpl.substitute(SEARCH=search_term.upper(), IMAGES=images_html)
+    html = tpl.substitute(SEARCH=search_term.upper() + " " + modifier.upper(), IMAGES=images_html)
     f.write(html)
     f.close()
 

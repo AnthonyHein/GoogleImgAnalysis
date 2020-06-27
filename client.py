@@ -20,30 +20,39 @@ load_dotenv()
 
 if __name__ == "__main__":
 
-    str = "person"
-
-    # Cleaning.
-    if len(argv) == 2 and argv[1] == '-c':
-        scrape.clean()
-        makeBrief.clean()
-        exit(0)
-
-    # Querying.
-    if len(argv) >= 3:
-        str = argv[2]
-    if len(argv) >= 2:
-        search_term = argv[1]
-    else:
-        print("I'm feeling lucky!")
-        with open('adjectives.txt', 'r') as file:
-            data = file.read().split("\n")
-        search_term = data[randint(0, len(data) - 1)]
-
     driver_path = os.getenv('DRIVER_PATH')
+    search_term = "smart"
+    modifier = "person"
+    num = 10
 
-    print("Performing search for \"" + search_term + " " + str + "\"")
+    while True:
 
-    image_paths = scrape.search_and_download(search_term + " " + str, driver_path)
+        print("---------------------------------------------------------------")
 
-    makeBrief.create(search_term, image_paths)
-    os.system(f"open pages/{search_term}.html")
+        temp = input("Clean?: ")
+        if temp != "":
+            scrape.clean()
+            makeBrief.clean()
+
+        temp = input("Search term: ")
+        if temp != "":
+            search_term = temp
+        else:
+            with open('adjectives.txt', 'r') as file:
+                data = file.read().split("\n")
+            search_term = data[randint(0, len(data) - 1)]
+
+        temp = input("Modifier: ")
+        if temp != "":
+            modifier = temp
+
+        temp = input("Number: ")
+        if temp != "":
+            num = int(temp)
+
+        print("Performing search for \"" + search_term + " " + modifier + "\"")
+
+        image_paths = scrape.search_and_download_faces(search_term + " " + modifier, driver_path, number_images=int(num))
+
+        makeBrief.create(search_term, modifier, image_paths)
+        os.system(f"open pages/{search_term}.html")
