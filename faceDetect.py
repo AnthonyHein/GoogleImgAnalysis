@@ -236,7 +236,7 @@ def classify(filepath):
         red /= w * h
 
         val = INT + BLUECOEFF * blue + GREENCOEFF * green + REDCOEFF * red
-        ppl.append(sigmoid(val) >= 0.5)
+        ppl.append("BLACK" if sigmoid(val) >= 0.5 else "WHITE")
 
     return ppl
 

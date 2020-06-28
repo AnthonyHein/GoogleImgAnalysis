@@ -8,6 +8,7 @@
 from string import Template
 import os
 import glob
+import faceDetect
 
 # Read in a file as a template, which enables substitution.
 def _readTemplate():
@@ -19,6 +20,7 @@ def create(search_term="", modifier="", image_paths=[], target_path='./pages'):
     images_html = ""
     for image in image_paths:
         images_html += "<img src=\"." + image + "\" alt=\"" + search_term + "\" style=\"height:300px;width:auto;\"><br>"
+        images_html += "<p>" + str(faceDetect.classify(image)) + "</p>"
 
     f = open(f"{target_path}/{search_term}.html", "w")
     tpl = _readTemplate()
