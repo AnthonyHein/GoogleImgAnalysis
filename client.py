@@ -33,6 +33,7 @@ if __name__ == "__main__":
         if temp != "":
             scrape.clean()
             makeBrief.clean()
+            continue
 
         temp = input("Search term: ")
         if temp != "":
