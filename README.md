@@ -1,3 +1,5 @@
+LATEST: Stopping here. It works lukewarmly. Might revisit when I understand machine learning more. Google Searches don't seem to be reliable.
+
 # GoogleImgAnalysis
 
 This program scrapes images from Google based on an adjective that the user enters.
